@@ -6,11 +6,11 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import superjson from "superjson";
-import { ZodError } from "zod";
-import { prisma } from "@src/server/db";
+import { prisma } from '@src/server/db';
+import { initTRPC } from '@trpc/server';
+import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
 
 /**
  * 1. CONTEXT
@@ -32,6 +32,8 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createInnerTRPCContext = (_opts: CreateContextOptions) => {
   return {
     prisma,
@@ -44,6 +46,8 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
   return createInnerTRPCContext({});
 };
@@ -63,8 +67,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
       },
     };
   },
