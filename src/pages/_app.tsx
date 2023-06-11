@@ -1,5 +1,6 @@
 import '@src/styles/globals.css';
 
+import { ClerkProvider } from '@clerk/nextjs';
 import { CacheProvider, type EmotionCache } from '@emotion/react';
 import { AppThemeProvider } from '@src/theme/AppThemeProvider';
 import createEmotionCache from '@src/theme/emotionCache';
@@ -18,14 +19,16 @@ const MyApp = (props: MyAppProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <AppThemeProvider>
-        <Component {...pageProps} />
-      </AppThemeProvider>
-    </CacheProvider>
+    <ClerkProvider {...pageProps}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <AppThemeProvider>
+          <Component {...pageProps} />
+        </AppThemeProvider>
+      </CacheProvider>
+    </ClerkProvider>
   );
 };
 
